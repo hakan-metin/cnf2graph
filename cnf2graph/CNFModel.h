@@ -22,7 +22,9 @@ class CNFModel {
 
     void addClause(std::vector<Literal>* literals);
 
-    const std::vector<std::unique_ptr<Clause>>& clauses() { return _clauses; }
+    const std::vector<std::unique_ptr<Clause>>& clauses() const {
+        return _clauses;
+    }
 
     int64 numberOfVariables()      const { return _num_variables + 1; }
     int64 numberOfClauses()        const { return _clauses.size();    }

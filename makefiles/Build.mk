@@ -42,7 +42,7 @@ $(BIN)$(exec)_release: $(release_objects)
 $(BIN)$(exec)_debug: $(debug_objects)
 
 CFLAGS += -I. -I$(SRC) -I$(GLOG_DIR)include/ -I$(GFLAGS_DIR)include
-LDFLAGS += -L$(GLOG_DIR)lib/ -L$(GFLAGS_DIR)lib/ -lgflags_nothreads
+LDFLAGS += -L$(GLOG_DIR)lib/ -L$(GFLAGS_DIR)lib/ -lgflags_nothreads -lpthread
 
 third_party: glog gtest gflags
 
