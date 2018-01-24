@@ -6,17 +6,17 @@
 
 #include <vector>
 
-#include "cnf2graph/CNFModel.h"
+#include "cnf2graph/CNFGraph.h"
 
 namespace cnf2graph {
 
 class WrapperSaucy {
  public:
-    WrapperSaucy();
-    ~WrapperSaucy();
+    WrapperSaucy() {}
+    ~WrapperSaucy() {}
 
-    void assign(const CNFModel& cnf);
-
+    void assign(const ColoredAdjacencyGraph& graph, unsigned int num_vars);
+ private:
 };
 
 }  // namespace cnf2graph

@@ -3,6 +3,7 @@
 #ifndef INCLUDE_CNF2GRAPH_CLAUSE_H_
 #define INCLUDE_CNF2GRAPH_CLAUSE_H_
 
+#include <iostream>
 #include <string>
 #include <vector>
 
