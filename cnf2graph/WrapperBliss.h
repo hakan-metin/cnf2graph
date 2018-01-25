@@ -1,21 +1,22 @@
 
 // Copyright 2017 Hakan Metin
 
-#ifndef INCLUDE_CNF2GRAPH_WRAPPERSAUCY_H_
-#define INCLUDE_CNF2GRAPH_WRAPPERSAUCY_H_
+#ifndef INCLUDE_CNF2GRAPH_WRAPPERBLISS_H_
+#define INCLUDE_CNF2GRAPH_WRAPPERBLISS_H_
 
 #include <vector>
+#include <memory>
 
 #include "cnf2graph/CNFGraph.h"
 
-#include "saucy/saucy.h"
+#include "bliss/graph.hh"
 
 namespace cnf2graph {
 
-class WrapperSaucy {
+class WrapperBliss {
  public:
-    WrapperSaucy() {}
-    ~WrapperSaucy() {}
+    WrapperBliss() {}
+    ~WrapperBliss() {}
 
     void assign(const ColoredAdjacencyGraph& graph);
  private:
@@ -23,7 +24,7 @@ class WrapperSaucy {
 
 }  // namespace cnf2graph
 
-#endif  // INCLUDE_CNF2GRAPH_WRAPPERSAUCY_H_
+#endif  // INCLUDE_CNF2GRAPH_WRAPPERBLISS_H_
 /*
  * Local Variables:
  * mode: c++

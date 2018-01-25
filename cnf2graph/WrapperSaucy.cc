@@ -1,10 +1,35 @@
 
 #include "cnf2graph/WrapperSaucy.h"
 
+
+namespace {
+std::vector<bool> seen;
+static int
+on_automorphism(int n, const int *gamma, int k, int *support, void *arg) {
+    seen.assign(n, false);
+
+    for (int i=0; i<n; ++i) {
+        if (i == gamma[i] || seen[i])
+            continue;
+        std::cout << "(" << i+1;
+
+        seen[i] = true;
+
+        for (int j = gamma[i]; j != i; j = gamma[j]) {
+            seen[j] = true;
+            std::cout << " " << j+1;
+        }
+        std::cout << ")";
+    }
+    std::cout << std::endl;
+}
+
+} // namespace
+
 namespace cnf2graph {
 
-void WrapperSaucy::assign(const ColoredAdjacencyGraph& graph,
-                          unsigned int num_vars) {
+
+void WrapperSaucy::assign(const ColoredAdjacencyGraph& graph) {
     std::vector<int> adj;
     std::vector<int> edj;
     std::vector<int> colors;
@@ -26,40 +51,21 @@ void WrapperSaucy::assign(const ColoredAdjacencyGraph& graph,
     for (unsigned int color : graph.colors())
         colors.push_back(color);
 
-    //colors.assign(graph.colors().begin(), graph.colors().end());
-    // const unsigned int kLiteralColor = 0;
-    // const unsigned int kClauseColor = 2;
-
-    // const unsigned int kNoNeighBourPositiveColor = 3;
-    // const unsigned int kNoNeighBourNegativeColor = 4;
-
-    // unsigned int color = kLiteralColor;
-    // for (unsigned int i=0; i<num_vars; ++i)
-    //         colors.push_back(color);
-
-    // for (unsigned int i=num_vars; i<2*num_vars; ++i) {
-    //         colors.push_back(color);
-    // }
-
-    // color = kClauseColor;
-    // for (unsigned int i=2*num_vars; i<graph.numberOfNodes(); ++i)
-    //     colors.push_back(color);
-
     n = graph.numberOfNodes();
     e = graph.numberOfEdges();
 
-    for (auto a : adj)
-        std::cout << a << std::endl;
-    std::cout  << std::endl;
+    // Initialize saucy structure
+    struct saucy *s = (saucy*) saucy_alloc(n);
+    struct saucy_graph	*g = (saucy_graph*)malloc(sizeof(struct saucy_graph));
 
-    for (auto a : edj)
-        std::cout << a << std::endl;
-    std::cout  << std::endl;
+    g->n = n;
+    g->e = e;
+    g->adj = adj.data();
+    g->edg = edj.data();
 
-    for (auto a : colors)
-        std::cout << a << std::endl;
-
-
+    struct saucy_stats stats;
+    saucy_search(s, g, 0, colors.data(), on_automorphism, g, &stats);
+    saucy_free(s);
 }
 
 

@@ -18,44 +18,50 @@ void CNFGraph::assign(const CNFModel& model) {
     unsigned int x, y, z;
     bool opt_optimized = true;
 
-    // Boolean consistency
-    for (BooleanVariable var(0); var < n; ++var) {
-        x = literal2Node(Literal(var, true), n);
-        y = literal2Node(Literal(var, false), n);
-        std::cout << x << " " << y << std::endl;
-        _graph.addEdge(x, y);
-    }
-
+    // Graph edges
     for (const std::unique_ptr<Clause>& clause : model.clauses()) {
         if (opt_optimized && clause->size() == 2) {
             x = literal2Node(clause->literals()[0], n);
             y = literal2Node(clause->literals()[1], n);
-            std::cout << x << " " << y << std::endl;
             _graph.addEdge(x, y);
         } else {
             for (const Literal& literal : *clause) {
                 z = literal2Node(literal, n);
-                std::cout << z << " " << num_clauses << std::endl;
                 _graph.addEdge(z, num_clauses);
             }
             num_clauses++;
         }
     }
 
-    // Set Colors
+    // Boolean consistency
+    for (BooleanVariable var(0); var < n; ++var) {
+        x = literal2Node(Literal(var, true), n);
+        y = literal2Node(Literal(var, false), n);
+        _graph.addEdge(x, y);
+    }
+
+    // Colors
+    int unused_color = kClauseColor + 1;
     for (BooleanVariable var(0); var < n; ++var) {
         x = literal2Node(Literal(var, true), n);
         y = literal2Node(Literal(var, false), n);
         if (_graph.degree()[x] == 1 && _graph.degree()[y] == 1) {
-            _graph.changeColor(x, kNoNeighBourPositiveColor);
-            _graph.changeColor(y, kNoNeighBourNegativeColor);
+            _graph.changeColor(x, unused_color++);
+            _graph.changeColor(y, unused_color++);
         }
     }
     for (unsigned int i=2*n; i < num_clauses; ++i)
         _graph.changeColor(i, kClauseColor);
 
+    std::cout << "SAUCY GENERATOR" << std::endl;
     WrapperSaucy ws;
-    ws.assign(_graph, n);
+    ws.assign(_graph);
+
+    std::cout << "BLISS GENERATOR" << std::endl;
+
+    WrapperBliss wb;
+    wb.assign(_graph);
+
 }
 
 }  // namespace cnf2graph

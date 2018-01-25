@@ -9,10 +9,15 @@ export LD_LIBRARY_PATH=${GTEST_DIR}:${GLOG_DIR}lib
 
 exec  := cnf2graph
 
-sources := $(wildcard $(SRC)/*.cc)
+sources = $(wildcard $(SRC)/*.cc)
 headers := $(wildcard $(SRC)/*.h)
 
+sources +=  $(wildcard saucy/*.c)
+sources +=  $(wildcard bliss/*.cc)
+
 objects         := $(patsubst %.cc, $(OBJ)%.o, $(sources))
+objects         := $(patsubst %.c, $(OBJ)%.o, $(objects))
+
 release_objects := $(patsubst %.cc, $(OBJ)release/%.o, $(sources))
 debug_objects   := $(patsubst %.cc, $(OBJ)debug/%.o, $(sources))
 
@@ -104,6 +109,9 @@ $(BIN)$(exec)_debug: $(debug_objects)
 
 
 $(OBJ)%.o: %.cc
+	$(call cmd-cxx, $@, $<, $(CFLAGS))
+
+$(OBJ)%.o: %.c
 	$(call cmd-cxx, $@, $<, $(CFLAGS))
 
 $(OBJ)release/%.o: %.cc

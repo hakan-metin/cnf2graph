@@ -10,6 +10,7 @@
 #include "cnf2graph/Graph.h"
 
 #include "cnf2graph/WrapperSaucy.h"
+#include "cnf2graph/WrapperBliss.h"
 
 namespace cnf2graph {
 

@@ -69,9 +69,9 @@ class AdjacencyGraph : public Graph {
 };
 
 static const unsigned int kLiteralColor = 0;
-static const unsigned int kClauseColor = 2;
-static const unsigned int kNoNeighBourPositiveColor = 3;
-static const unsigned int kNoNeighBourNegativeColor = 4;
+static const unsigned int kClauseColor = 1;
+static const unsigned int kNoNeighBourPositiveColor = 2;
+static const unsigned int kNoNeighBourNegativeColor = 3;
 
 class ColoredAdjacencyGraph : public AdjacencyGraph {
  public:
